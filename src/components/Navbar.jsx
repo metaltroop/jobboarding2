@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import {Link} from "react-router-dom"
 const navbar = () => {
   return (
@@ -9,9 +10,12 @@ const navbar = () => {
           </div>
           <div className="flex gap-8">
             <li><Link to="./Home">Home</Link></li>
-            <li><Link to="./Services">Services</Link></li>
+            <li><Link to="./login ">Services</Link></li>
             <li><Link to="./Contact">Contact</Link></li>
+          
           </div>
+
+          
         </ul>
       </nav>
     </>

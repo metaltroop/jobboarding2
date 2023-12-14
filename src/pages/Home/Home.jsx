@@ -4,8 +4,15 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import TextField from '@mui/material/TextField';
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
+
+const filter = createFilterOptions();
+
 
 function Home() {
+  const [value, setValue] = React.useState(null);
+
   const [age, setAge] = React.useState("");
 
   const handleChange = (event) => {
@@ -18,12 +25,68 @@ function Home() {
       </div>
       <div className="p-10 bg-[#ffffff4f] mx-60 rounded-xl">
         <div className="flex gap-8 justify-center">
-          <input
-            type="text"
-            id=""
-            placeholder="What you are looking for?"
-            className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-80 p-2.5"
+        <Autocomplete
+        value={value}
+        onChange={(event, newValue) => {
+          if (typeof newValue === 'string') {
+            setValue({
+              title: newValue,
+            });
+          } else if (newValue && newValue.inputValue) {
+            // Create a new value from the user input
+            setValue({
+              title: newValue.inputValue,
+            });
+          } else {
+            setValue(newValue);
+          }
+        }}
+        filterOptions={(options, params) => {
+          const filtered = filter(options, params);
+  
+          const { inputValue } = params;
+          // Suggest the creation of a new value
+          const isExisting = options.some((option) => inputValue === option.title);
+          if (inputValue !== '' && !isExisting) {
+            filtered.push({
+              inputValue,
+              title: `Add "${inputValue}"`,
+            });
+          }
+  
+          return filtered;
+        }}
+        selectOnFocus
+        clearOnBlur
+        handleHomeEndKeys
+        id="free-solo-with-text-demo"
+        options={top100Films}
+        getOptionLabel={(option) => {
+          // Value selected with enter, right from the input
+          if (typeof option === 'string') {
+            return option;
+          }
+          // Add "xxx" option created dynamically
+          if (option.inputValue) {
+            return option.inputValue;
+          }
+          // Regular option
+          return option.title;
+        }}
+        renderOption={(props, option) => <li {...props}>{option.title}</li>}
+        sx={{ width: 300 }}
+        freeSolo
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Free solo with text demo"
+            InputLabelProps={{
+              shrink: true,
+              
+            }}
           />
+        )}
+      />
           <FormControl
             sx={{ m: 0, minWidth: 200 }}
             className="bg-white rounded-md"
@@ -103,5 +166,42 @@ function Home() {
     </div>
   );
 }
+const top100Films = [
+  { title: 'The Shawshank Redemption', year: 1994 },
+  { title: 'The Godfather', year: 1972 },
+  { title: 'The Godfather: Part II', year: 1974 },
+  { title: 'The Dark Knight', year: 2008 },
+  { title: '12 Angry Men', year: 1957 },
+  { title: "Schindler's List", year: 1993 },
+  { title: 'Pulp Fiction', year: 1994 },
+  {
+    title: 'The Lord of the Rings: The Return of the King',
+    year: 2003,
+  },
+  { title: 'The Good, the Bad and the Ugly', year: 1966 },
+  { title: 'Fight Club', year: 1999 },
+  {
+    title: 'The Lord of the Rings: The Fellowship of the Ring',
+    year: 2001,
+  },
+  {
+    title: 'Star Wars: Episode V - The Empire Strikes Back',
+    year: 1980,
+  },
+  { title: 'Forrest Gump', year: 1994 },
+  { title: 'Inception', year: 2010 },
+  {
+    title: 'The Lord of the Rings: The Two Towers',
+    year: 2002,
+  },
+  { title: "One Flew Over the Cuckoo's Nest", year: 1975 },
+  { title: 'Goodfellas', year: 1990 },
+  { title: 'The Matrix', year: 1999 },
+  { title: 'Seven Samurai', year: 1954 },
+  {
+    title: 'Star Wars: Episode IV - A New Hope',
+    year: 1977,
+  },
+];
 
 export default Home;

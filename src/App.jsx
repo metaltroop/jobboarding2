@@ -4,6 +4,8 @@ import Footer from "./components/Footer"
 import {Route, Routes} from "react-router-dom"
 import Home from "./pages/Home/Home"
 import Contact from "./pages/Contact/Contact";
+import Login from "./pages/login/login";
+
 function App() {
   return (
     <>
@@ -15,7 +17,9 @@ function App() {
           <main className="">
             <Routes>
               <Route path="/Home" element={<Home />} />
-              <Route path="/Contact" element={<Contact />} />
+              <Route path="/Contact" element={<Contact />}/>
+              <Route path="/login" element={<Login />}/>
+              
             </Routes>
           </main>
         </div>
